@@ -135,7 +135,8 @@ def create_cnn_model_arch():
     cnn_model.add(Dropout(drop_prob))
     cnn_model.add(Dense(num_classes, activation='softmax'))
     # initiating the stochastic gradient descent optimiser
-    stochastic_gradient_descent = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)    cnn_model.compile(optimizer=stochastic_gradient_descent,  # using the stochastic gradient descent optimiser
+    stochastic_gradient_descent = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)
+    cnn_model.compile(optimizer=stochastic_gradient_descent,  # using the stochastic gradient descent optimiser
                   loss='categorical_crossentropy')  # using the cross-entropy loss function
     return cnn_model
 
@@ -144,8 +145,7 @@ def create_model_with_kfold_cross_validation(nfolds=10):
     num_epochs = 30 # we iterate 200 times over the entire training set
     random_state = 51 # control the randomness for reproducibility of the results on the same platform
     # Loading and normalizing the training samples prior to feeding it to the created CNN model
-    training_samples, training_samples_target, training_samples_id =
-      load_normalize_training_samples()
+    training_samples, training_samples_target, training_samples_id = load_normalize_training_samples()
     yfull_train = dict()
     # Providing Training/Testing indices to split data in the training samples
     # which is splitting data into 10 consecutive folds with shuffling
@@ -154,7 +154,7 @@ def create_model_with_kfold_cross_validation(nfolds=10):
     sum_score = 0 # overall score (will be incremented at each iteration)
     trained_models = [] # storing the modeling of each iteration over the folds
     # Getting the training/testing samples based on the generated training/testing indices by
-      Kfold
+      
     for train_index, test_index in kf:
        cnn_model = create_cnn_model_arch()
        training_samples_X = training_samples[train_index] # Getting the training input variables
@@ -173,8 +173,7 @@ def create_model_with_kfold_cross_validation(nfolds=10):
                validation_samples_Y),
              callbacks=callbacks)
        # measuring the generalization ability of the trained model based on the validation set
-       predictions_of_validation_samples =
-         cnn_model.predict(validation_samples_X.astype('float32'),
+       predictions_of_validation_samples = cnn_model.predict(validation_samples_X.astype('float32'),
          batch_size=batch_size, verbose=2)
        current_model_score = log_loss(Y_valid, predictions_of_validation_samples)
        print('Current model score log_loss: ', current_model_score)
@@ -207,8 +206,7 @@ def test_generality_crossValidation_over_test_set( overall_settings_output_strin
        test_prediction = model.predict(testing_samples, batch_size=batch_size, verbose=2)
        yfull_test.append(test_prediction)
     test_result = merge_several_folds_mean(yfull_test, number_of_folds)
-    overall_settings_output_string = 'loss_' + overall_settings_output_string \ + '_folds_' +
-      str(number_of_folds)
+    overall_settings_output_string = 'loss_' + 'overall_settings_output_string ' + '_folds_' + str(number_of_folds)
     format_results_for_types(test_result, testing_samples_id, overall_settings_output_string)
 
 if __name__ == '__main__':
